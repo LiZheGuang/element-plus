@@ -1058,12 +1058,15 @@ describe('Select', () => {
     selectWrapper.vm.handleResize()
     options[0].click()
     await nextTick()
+    const tagWrappers = wrapper.findAll('.el-select__tags-text')
+    const tagWrapperDom = tagWrappers[0].element
+    expect(Number.parseInt(tagWrapperDom.style.maxWidth) === 200 - 75).toBe(
+      true
+    )
     options[1].click()
     await nextTick()
     options[2].click()
     await nextTick()
-    const tagWrappers = wrapper.findAll('.el-select__tags-text')
-    const tagWrapperDom = tagWrappers[0].element
     expect(Number.parseInt(tagWrapperDom.style.maxWidth) === 200 - 123).toBe(
       true
     )
@@ -2434,5 +2437,40 @@ describe('Select', () => {
       // after the second deletion, an el-tag still exist
       expect(wrapper.findAll('.el-tag').length).toBe(1)
     })
+  })
+
+  it('It should generate accessible attributes', async () => {
+    wrapper = _mount(
+      `<el-select v-model="value">
+        <el-option label="label" value="1" />
+        <el-option label="disabled" value="2" disabled />
+      </el-select>`,
+      () => ({ value: '1' })
+    )
+
+    const dropdown = wrapper.findComponent({ name: 'ElSelectDropdown' })
+    const input = wrapper.find('input')
+    const list = dropdown.find('.el-select-dropdown__list')
+    const option = dropdown.find('.el-select-dropdown__item')
+    const disabledOption = dropdown.find(
+      '.el-select-dropdown__item:nth-child(2)'
+    )
+
+    expect(input.attributes('role')).toBe('combobox')
+    expect(input.attributes('aria-autocomplete')).toBe('none')
+    expect(input.attributes('aria-controls')).toBe(list.attributes('id'))
+    expect(input.attributes('aria-expanded')).toBe('false')
+    expect(input.attributes('aria-haspopup')).toBe('listbox')
+    expect(input.attributes('aria-activedescendant')).toBe('')
+
+    expect(list.attributes('id')).toBeTruthy()
+    expect(list.attributes('role')).toBe('listbox')
+    expect(list.attributes('aria-orientation')).toBe('vertical')
+
+    expect(option.attributes('id')).toBeTruthy()
+    expect(option.attributes('role')).toBe('option')
+    expect(option.attributes('aria-disabled')).toBe(undefined)
+    expect(option.attributes('aria-selected')).toBe('true')
+    expect(disabledOption.attributes('aria-disabled')).toBe('true')
   })
 })
