@@ -35,7 +35,7 @@ pagination/background-color
 
 Use small pagination in the case of limited space.
 
-:::demo Just set the `small` attribute to `true` and the Pagination becomes smaller.
+:::demo set size to change the `size`. Here is a demonstration of `small`
 
 pagination/small-pagination
 
@@ -67,7 +67,8 @@ pagination/more-elements
 
 | Name                                | Description                                                                                                                     | Type                                                                              | Default                              |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------ |
-| small                               | whether to use small pagination                                                                                                 | ^[boolean]                                                                        | false                                |
+| small ^(deprecated)                 | whether to use small pagination                                                                                                 | ^[boolean]                                                                        | false                                |
+| size ^(2.7.6)                       | pagination size                                                                                                                 | ^[enum]`'large' \| 'default' \| 'small'`                                          | 'default'                            |
 | background                          | whether the buttons have a background color                                                                                     | ^[boolean]                                                                        | false                                |
 | page-size / v-model:page-size       | item count of each page                                                                                                         | ^[number]                                                                         | —                                    |
 | default-page-size                   | default initial value of page size, not setting is the same as setting 10                                                       | ^[number]                                                                         | —                                    |
@@ -99,12 +100,13 @@ We'll detect some deprecated usages, if your pagination don't appeared or worked
 
 ### Events
 
-| Name           | Description                                                       | Type                                 |
-| -------------- | ----------------------------------------------------------------- | ------------------------------------ |
-| size-change    | triggers when `page-size` changes                                 | ^[Function]`(value: number) => void` |
-| current-change | triggers when `current-page` changes                              | ^[Function]`(value: number) => void` |
-| prev-click     | triggers when the prev button is clicked and current page changes | ^[Function]`(value: number) => void` |
-| next-click     | triggers when the next button is clicked and current page changes | ^[Function]`(value: number) => void` |
+| Name            | Description                                                       | Type                                                         |
+| --------------- | ----------------------------------------------------------------- | ------------------------------------------------------------ |
+| size-change     | triggers when `page-size` changes                                 | ^[Function]`(value: number) => void`                         |
+| current-change  | triggers when `current-page` changes                              | ^[Function]`(value: number) => void`                         |
+| change ^(2.4.4) | triggers when `current-page` or `page-size` changes               | ^[Function]`(currentPage: number, pageSize: number) => void` |
+| prev-click      | triggers when the prev button is clicked and current page changes | ^[Function]`(value: number) => void`                         |
+| next-click      | triggers when the next button is clicked and current page changes | ^[Function]`(value: number) => void`                         |
 
 :::warning
 
